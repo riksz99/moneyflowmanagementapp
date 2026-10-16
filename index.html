@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>MoneyFlow - Personal Finance Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f4f6f8;--c:#fff;--t:#17202b;--m:#667385;--p:#0f766e;--g:#16a34a;--r:#dc2626;--b:#e2e7ec;--y:#c2410c;--bt:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1318;--c:#182029;--t:#e8edf2;--m:#93a0ae;--p:#2dd4bf;--g:#4ade80;--r:#f87171;--b:#28323c;--y:#fbbf24;--bt:#04201d;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0e1318;--c:#182029;--t:#e8edf2;--m:#93a0ae;--p:#2dd4bf;--g:#4ade80;--r:#f87171;--b:#28323c;--y:#fbbf24;--bt:#04201d;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.ic{width:17px;height:17px;flex:none;vertical-align:-3px}
+header{display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:auto;padding:14px 16px 4px;gap:8px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px}.brand .ic{width:24px;height:24px;color:var(--p)}
+.hr{display:flex;gap:8px;align-items:center}.hr select{width:auto;margin:0;padding:8px}
+.app{display:grid;grid-template-columns:200px 1fr;gap:18px;max-width:1100px;margin:auto;padding:0 16px 60px}
+nav{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;gap:2px;padding:10px 0}
+nav button{display:flex;gap:10px;align-items:center;border:0;background:none;color:var(--m);padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;text-align:left;white-space:nowrap}
+nav button.on{background:var(--c);color:var(--p);font-weight:600;box-shadow:0 0 0 1px var(--b)}
+@media(max-width:800px){.app{grid-template-columns:1fr;gap:0}nav{flex-direction:row;overflow-x:auto;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;margin:0 -16px;padding:8px 16px}}
+main{min-width:0;padding-top:10px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}.ph h2{margin:0;font-size:20px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h3{font-size:15px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.k{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:12px}.k small{color:var(--m);display:block;font-size:12px}.k b{font-size:17px;word-break:break-word}
+.g{color:var(--g)}.rd{color:var(--r)}.m{color:var(--m)}.y{color:var(--y)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--b)}.row:last-child{border:0}
+.row>div:first-child{min-width:0}small{color:var(--m)}.row small{display:block}.rt{display:flex;align-items:center;gap:6px;text-align:right;flex-wrap:wrap;justify-content:flex-end}
+button{font-family:inherit}.b,.b2,.x{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:9px;padding:8px 13px;cursor:pointer;font-size:13px}
+.b{background:var(--p);color:var(--bt)}.b2{background:var(--b);color:var(--t)}.x{background:none;color:var(--r);padding:6px}.b:hover,.b2:hover{filter:brightness(.93)}
+.bar{height:9px;background:var(--b);border-radius:6px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--p)}
+input,select{width:100%;padding:9px;border:1px solid var(--b);border-radius:9px;background:var(--bg);color:var(--t);font-size:15px;margin-top:3px}
+label{display:block;font-size:12px;color:var(--m);margin-bottom:10px}
+.md{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.box{background:var(--c);border-radius:14px;padding:16px;width:100%;max-width:400px;max-height:90vh;overflow:auto}.box h3{margin:0 0 12px}
+.r{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.ts{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:10px;z-index:40;font-size:14px;max-width:90vw}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.donut{width:130px;height:130px;border-radius:50%;flex:none;position:relative}.donut:after{content:"";position:absolute;inset:28px;background:var(--c);border-radius:50%}
+.ch{display:flex;gap:10px;height:130px}.ch div{flex:1;text-align:center;font-size:11px;color:var(--m);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.ch span{display:flex;gap:2px;align-items:flex-end;flex:1}.ch i{flex:1;border-radius:3px 3px 0 0;min-height:2px}
+.lg{display:flex;align-items:center;gap:6px;font-size:13px}.lg i{width:10px;height:10px;border-radius:3px;flex:none}
+textarea{width:100%;height:120px;background:var(--bg);color:var(--t);border:1px solid var(--b);border-radius:9px;padding:8px;font-size:12px}
+.mn{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.mn b{min-width:130px;text-align:center}
+.blk{display:block}
+</style></head><body>
+<header id="hdr"></header>
+<div class="app"><nav id="nav"></nav><main id="v"></main></div>
+<script>
+const IC={grid:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',wallet:'<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',trend:'<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',flag:'<path d="M4 22V3M4 4h13l-2 4 2 4H4"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',calc:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h8"/>',db:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0"/>',plus:'<path d="M12 5v14M5 12h14"/>',trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>',left:'<path d="m15 18-6-6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',check:'<path d="M20 6 9 17l-5-5"/>',edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',refresh:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>',copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',up:'<path d="M12 19V5M5 12l7-7 7 7"/>',coins:'<circle cx="8" cy="8" r="6"/><path d="M18.1 10.4A6 6 0 1 1 10.4 18.1M7 6h1v4"/>',globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const bt=(a,l,i,c='b',p='')=>`<button class="${c}" data-a="${a}" data-p="${p}">${i?ic(i):''}${l}</button>`;
+const dl=(k,i)=>`<button class="x" title="Delete" data-a="del" data-p="${k}:${i}">${ic('trash')}</button>`;
+const $=i=>document.getElementById(i),D=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const P=n=>(isFinite(n)?n:0).toFixed(1)+'%';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* currencies: code, name, symbol, decimals, default units per 1 USD (editable sample rates) */
+const CUR=[['IDR','Indonesian Rupiah','Rp ',0,16000],['USD','US Dollar','US$',2,1],['EUR','Euro','€',2,.92],['GBP','British Pound','£',2,.78],['JPY','Japanese Yen','¥',0,150],['SGD','Singapore Dollar','S$',2,1.34],['MYR','Malaysian Ringgit','RM ',2,4.4],['AUD','Australian Dollar','A$',2,1.52],['CNY','Chinese Yuan','CN¥',2,7.2],['SAR','Saudi Riyal','SAR ',2,3.75]];
+const CI=Object.fromEntries(CUR.map(c=>[c[0],c])),DR=Object.fromEntries(CUR.map(c=>[c[0],c[4]]));
+const curO=()=>CUR.map(c=>[c[0],c[0]+' - '+c[1]]),opts=s=>CUR.map(c=>`<option value="${c[0]}" ${c[0]==s?'selected':''}>${c[0]} - ${c[1]}</option>`).join('');
+const cu=x=>(x&&CI[x.cur])?x.cur:'IDR';
+const cv=(n,f,t)=>{t=t||S.cur;return f==t?n:n/(S.rates[f]||1)*(S.rates[t]||1)};
+const rc=(n,c)=>{const k=Math.pow(10,CI[c][3]);return Math.round(n*k)/k};
+const F=(n,c)=>{c=c||S.cur;const d=CI[c][3];return(n<0?'-':'')+CI[c][2]+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})};
+const eq=(n,c)=>c!=S.cur?`<small>about ${F(cv(n,c))}</small>`:'';
+const C={out:['Food','Transport','Bills','Shopping','Health','Entertainment','Education','Loan Payments','Donations','Other'],in:['Salary','Bonus','Business','Investment Returns','Other']};
+const NEED=['Food','Transport','Bills','Health','Loan Payments','Education'],COL=['#0f766e','#2563eb','#d97706','#9333ea','#dc2626','#0891b2','#65a30d','#db2777','#64748b','#ea580c'];
+const def=()=>({cur:'IDR',rates:{...DR},acc:[{id:1,n:'Cash',init:0,cur:'IDR'},{id:2,n:'Bank Account',init:0,cur:'IDR'},{id:3,n:'E-Wallet',init:0,cur:'IDR'}],tx:[],bud:{},inv:[],debt:[],goal:[],bill:[]});
+let S;try{S=JSON.parse(localStorage.getItem('moneyflow'))}catch(e){}
+function norm(){S=S&&typeof S=='object'?{...def(),...S}:def();S.rates={...DR,...S.rates};if(!CI[S.cur])S.cur='IDR';['acc','tx','inv','debt','goal','bill'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});if(!S.bud||typeof S.bud!='object')S.bud={}}
+norm();
+const sv=()=>{try{localStorage.setItem('moneyflow',JSON.stringify(S))}catch(e){}},uid=()=>Date.now()+Math.floor(Math.random()*9999);
+let M=D().slice(0,7),tab='dash',CC=null;
+const mv=(m,d)=>{let[y,x]=m.split('-').map(Number);x+=d;while(x>12){x-=12;y++}while(x<1){x+=12;y--}return y+'-'+String(x).padStart(2,'0')};
+const mname=m=>new Date(m+'-15').toLocaleDateString('en-US',{month:'long',year:'numeric'});
+const W=i=>S.acc.find(x=>x.id==i),tc=t=>t.cur&&CI[t.cur]?t.cur:(W(t.a)?cu(W(t.a)):'IDR'),tb=t=>cv(t.amt,tc(t));
+const txm=m=>S.tx.filter(t=>t.d.startsWith(m)),sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const inc=m=>sum(txm(m).filter(t=>t.t=='in'),tb),out=m=>sum(txm(m).filter(t=>t.t=='out'),tb);
+const bal=a=>{const c=cu(a);return a.init+sum(S.tx,t=>{let v=0;if(t.a==a.id)v+=(t.t=='in'?1:-1)*cv(t.amt,tc(t),c);if(t.t=='tf'&&t.to==a.id)v+=t.amt2!=null?t.amt2:cv(t.amt,tc(t),c);return v})};
+const cash=()=>sum(S.acc,a=>cv(bal(a),cu(a))),invV=()=>sum(S.inv,i=>cv(i.val,cu(i))),invM=()=>sum(S.inv,i=>cv(i.modal,cu(i)));
+const owe=()=>sum(S.debt.filter(d=>d.k=='debt'),d=>cv(d.total-d.paid,cu(d))),rec=()=>sum(S.debt.filter(d=>d.k=='recv'),d=>cv(d.total-d.paid,cu(d)));
+const accO=()=>S.acc.map(a=>[a.id,a.n+' ('+cu(a)+')']);
+function toast(m){const t=document.createElement('div');t.className='ts';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
+function openForm(title,fs,cb,ok='Save'){const m=document.createElement('div');m.className='md';
+m.innerHTML=`<div class="box"><h3>${title}</h3>${fs.map(f=>`<label id="L_${f.k}">${f.l}${f.o?`<select id="f_${f.k}">${f.o.map(o=>{o=[].concat(o);return`<option value="${esc(o[0])}">${esc(o[o.length-1])}</option>`}).join('')}</select>`:`<input id="f_${f.k}" type="${f.t||'text'}" value="${esc(f.v)}" step="any">`}</label>`).join('')}<div class="r"><button class="b2" id="fx">Cancel</button><button class="b" id="fo">${ok}</button></div></div>`;
+document.body.appendChild(m);fs.forEach(f=>{if(f.o&&f.v!=null)$('f_'+f.k).value=f.v});
+$('fx').onclick=()=>m.remove();
+$('fo').onclick=()=>{const o={};fs.forEach(f=>{const v=$('f_'+f.k).value;o[f.k]=f.t=='number'?(+v||0):v});const e=cb(o);if(e)toast(e);else m.remove()};return m}
+const ask=(t,l,cb,v)=>openForm(t,[{k:'x',l,t:'number',v}],o=>{cb(o.x)});
+const R=()=>{sv();render()};
+const tabs={dash:['Dashboard','grid',vDash],tx:['Transactions','list',vTx],acc:['Wallets','wallet',vAcc],bud:['Budget','target',vBud],inv:['Investments','trend',vInv],debt:['Debts','card',vDebt],goal:['Goals','flag',vGoal],bill:['Bills','bell',vBill],cur:['Currency','globe',vCur],calc:['Calculators','calc',vCalc],data:['Data & Backup','db',vData]};
+function render(){$('hdr').innerHTML=`<div class="brand">${ic('coins')}MoneyFlow</div><div class="hr"><select data-c="base" title="Base currency">${CUR.map(c=>`<option value="${c[0]}" ${c[0]==S.cur?'selected':''}>${c[0]}</option>`).join('')}</select>${bt('theme','Theme','sun','b2')}</div>`;
+$('nav').innerHTML=Object.entries(tabs).map(([k,v])=>`<button class="${k==tab?'on':''}" data-a="tab" data-p="${k}">${ic(v[1])}${v[0]}</button>`).join('');
+$('v').innerHTML=tabs[tab][2]();if(tab=='calc')calc();if(tab=='cur')conv();window.scrollTo(0,0)}
+const hd=(t,b='')=>`<div class="ph"><h2>${t}</h2><div>${b}</div></div>`;
+const mnav=()=>`<div class="mn">${bt('mp','','left','b2','-1')}<b>${mname(M)}</b>${bt('mp','','right','b2','1')}</div>`;
+const K=(l,v,c='')=>`<div class="k"><small>${l}</small><b class="${c}">${v}</b></div>`;
+const none=t=>`<p class="m" style="margin:4px 0">${t}</p>`;
+function catSum(m){const o={};txm(m).filter(t=>t.t=='out').forEach(t=>o[t.c]=(o[t.c]||0)+tb(t));return Object.entries(o).sort((a,b)=>b[1]-a[1])}
+function vDash(){const i=inc(M),e=out(M),s=i-e,r=i?s/i*100:0,ca=cash(),iv=invV(),nw=ca+iv+rec()-owe();
+const last=[0,1,2].map(n=>out(mv(M,-n))).filter(x=>x>0),avg=last.length?sum(last,x=>x)/last.length:0,em=avg?ca/avg:0;
+const cs=catSum(M),tot=sum(cs,c=>c[1]);let a=0;const cg=cs.map((c,n)=>{const p=c[1]/tot*100,x=`${COL[n%10]} ${a}% ${a+p}%`;a+=p;return x}).join(',');
+const need=sum(txm(M).filter(t=>t.t=='out'&&NEED.includes(t.c)),tb),want=e-need;
+const sc=Math.max(0,Math.round(Math.min(100,(r>=20?40:Math.max(0,r*2))+Math.min(30,em/6*30)+(owe()==0?30:Math.max(0,30-owe()/(Math.max(i,1)*12)*30)))));
+const ms=[5,4,3,2,1,0].map(n=>mv(M,-n)),mx=Math.max(1,...ms.map(m=>Math.max(inc(m),out(m)))),bd=S.bill.filter(b=>b.paid!=D().slice(0,7));
+return hd('Dashboard',bt('addTx','Add Transaction','plus'))+mnav()+`<p class="m" style="margin:0 0 10px"><small>All totals are shown in ${S.cur} (${CI[S.cur][1]}). Change it in the top-right selector or the Currency tab.</small></p><div class="grid">${K('Net Worth',F(nw),nw>=0?'g':'rd')}${K('Total Cash Balance',F(ca))}${K('Income',F(i),'g')}${K('Expenses',F(e),'rd')}${K('Remaining / Savings',F(s),s>=0?'g':'rd')}${K('Savings Rate',P(r),r>=20?'g':'y')}${K('Investment Value',F(iv))}${K('Investment Gain/Loss',F(iv-invM()),iv>=invM()?'g':'rd')}</div>
+<div class="two"><div class="card"><h3>Spending by Category</h3>${cs.length?`<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div class="donut" style="background:conic-gradient(${cg})"></div><div>${cs.map((c,n)=>`<div class="lg"><i style="background:${COL[n%10]}"></i>${c[0]}: ${F(c[1])} (${P(c[1]/tot*100)})</div>`).join('')}</div></div>`:none('No expenses this month.')}</div>
+<div class="card"><h3>Last 6 Months</h3><div class="ch">${ms.map(m=>`<div><span><i style="height:${inc(m)/mx*100}%;background:var(--g)"></i><i style="height:${out(m)/mx*100}%;background:var(--r)"></i></span>${m.slice(5)}</div>`).join('')}</div><small>Green = income, red = expenses</small></div></div>
+<div class="two"><div class="card"><h3>Financial Health Score: <span class="${sc>=70?'g':sc>=40?'y':'rd'}">${sc}/100</span></h3><div class="bar"><i style="width:${sc}%"></i></div>
+<div class="row"><span>Emergency fund <small>target: 6 months</small></span><b class="${em>=6?'g':em>=3?'y':'rd'}">${em.toFixed(1)} months</b></div>
+<div class="row"><span>My debts</span><b class="rd">${F(owe())}</b></div><div class="row"><span>Money owed to me</span><b>${F(rec())}</b></div><div class="row"><span>Avg. monthly spending (3 mo)</span><b>${F(avg)}</b></div></div>
+<div class="card"><h3>50/30/20 Rule (this month)</h3>${[['Needs',need,50],['Wants',want,30],['Savings & investing',Math.max(s,0),20]].map(x=>{const p=i?x[1]/i*100:0;return`<div class="row blk"><div style="display:flex;justify-content:space-between;gap:8px"><span>${x[0]} <small style="display:inline">ideal ${x[2]}%</small></span><b>${F(x[1])} (${P(p)})</b></div><div class="bar"><i style="width:${Math.min(100,p)}%;background:${(x[2]==20?p>=20:p<=x[2])?'var(--g)':'var(--r)'}"></i></div></div>`}).join('')}</div></div>
+<div class="card"><h3>Unpaid Bills This Month</h3>${bd.length?bd.map(b=>`<div class="row"><span>${esc(b.n)} <small>due on day ${b.day}</small></span><div class="rt" style="display:block"><b>${F(b.amt,cu(b))}</b>${eq(b.amt,cu(b))}</div></div>`).join(''):none('All bills are paid.')}</div>`}
+function vTx(){const l=txm(M).sort((a,b)=>b.d.localeCompare(a.d)||b.id-a.id);
+return hd('Transactions',bt('addTx','Add Transaction','plus'))+mnav()+`<div class="grid">${K('Income',F(inc(M)),'g')}${K('Expenses',F(out(M)),'rd')}${K('Net',F(inc(M)-out(M)))}</div><div class="card">${l.length?l.map(t=>{const a=W(t.a),b=W(t.to),c=tc(t);return`<div class="row"><div><b>${esc(t.c)}</b>${t.note?' - '+esc(t.note):''}<small>${t.d} | ${esc(a?a.n:'?')}${t.t=='tf'?' to '+esc(b?b.n:'?'):''}</small></div><div class="rt"><span><b class="${t.t=='in'?'g':t.t=='out'?'rd':''}">${t.t=='in'?'+':t.t=='out'?'-':''}${F(t.amt,c)}</b>${t.t=='tf'&&b&&cu(b)!=c?`<small>received ${F(t.amt2!=null?t.amt2:cv(t.amt,c,cu(b)),cu(b))}</small>`:eq(t.amt,c)}</span>${dl('tx',t.id)}</div></div>`}).join(''):none('No transactions this month. Click "Add Transaction" to start.')}</div>`}
+function addTx(){if(!S.acc.length)return toast('Create a wallet first');
+const wo=accO();
+openForm('New Transaction',[{k:'t',l:'Type',o:[['out','Expense'],['in','Income'],['tf','Transfer between wallets']]},{k:'d',l:'Date',t:'date',v:D()},{k:'amt',l:'Amount (in the wallet currency)',t:'number'},{k:'a',l:'Wallet (from)',o:wo},{k:'to',l:'To wallet',o:wo,v:(S.acc[1]||S.acc[0]).id},{k:'amt2',l:'Amount received (optional; auto-converted if 0)',t:'number'},{k:'c',l:'Category',o:C.out},{k:'note',l:'Note (optional)'}],o=>{
+const a=W(o.a),b=W(o.to);if(!a)return'Choose a wallet';if(o.amt<=0)return'Enter an amount greater than 0';if(!o.d)return'Choose a date';
+const x={id:uid(),t:o.t,d:o.d,amt:o.amt,a:a.id,c:o.c,note:o.note,cur:cu(a)};
+if(o.t=='tf'){if(!b||a.id==b.id)return'Choose two different wallets';x.to=b.id;x.c='Transfer';x.amt2=o.amt2>0?o.amt2:rc(cv(o.amt,cu(a),cu(b)),cu(b))}
+S.tx.push(x);M=o.d.slice(0,7);R()});
+const sy=()=>{const t=$('f_t').value,f=W($('f_a').value),g=W($('f_to').value);$('f_c').innerHTML=(t=='in'?C.in:C.out).map(o=>`<option>${o}</option>`).join('');$('L_c').style.display=t=='tf'?'none':'';$('L_to').style.display=t=='tf'?'':'none';$('L_amt2').style.display=t=='tf'&&f&&g&&cu(f)!=cu(g)?'':'none'};
+['f_t','f_a','f_to'].forEach(i=>$(i).onchange=sy);sy()}
+function vAcc(){const h={};S.acc.forEach(a=>h[cu(a)]=(h[cu(a)]||0)+bal(a));
+return hd('Wallets',bt('addAcc','Add Wallet','plus'))+`<div class="grid">${K('Total Balance ('+S.cur+')',F(cash()))}${K('Wallets',S.acc.length)}</div><div class="card">${S.acc.map(a=>{const b=bal(a);return`<div class="row"><div><b>${esc(a.n)}</b> <small style="display:inline">${cu(a)}</small><small>Opening balance ${F(a.init,cu(a))}</small></div><div class="rt"><span><b>${F(b,cu(a))}</b>${eq(b,cu(a))}</span>${bt('editAcc','Edit','edit','b2',a.id)}${dl('acc',a.id)}</div></div>`}).join('')||none('No wallets yet.')}</div>`}
+function vBud(){const sp=Object.fromEntries(catSum(M)),tl=sum(Object.values(S.bud),x=>x),ts=sum(C.out.filter(c=>S.bud[c]),c=>sp[c]||0);
+return hd('Budget')+mnav()+`<div class="grid">${K('Total Limit',F(tl))}${K('Spent (budgeted)',F(ts))}${K('Left',F(tl-ts),tl-ts>=0?'g':'rd')}</div><div class="card"><p class="m" style="margin-top:0">Limits are in ${S.cur}. Spending in other currencies is converted automatically. Type a limit and press Enter or tap outside the box. Leave 0 for no limit.</p>${C.out.map(c=>{const b=S.bud[c]||0,s=sp[c]||0,p=b?s/b*100:0;return`<div class="row blk"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>${c}</span><input type="number" style="width:150px;margin:0" value="${b||''}" placeholder="Limit (${S.cur})" data-c="bud" data-p="${c}"></div><small>Spent ${F(s)}${b?` | left <b class="${b-s<0?'rd':'g'}">${F(b-s)}</b> (${P(p)})`:''}</small>${b?`<div class="bar"><i style="width:${Math.min(100,p)}%;background:${p>100?'var(--r)':p>80?'var(--y)':'var(--p)'}"></i></div>`:''}</div>`}).join('')}</div>`}
+const IT=['Stocks','Mutual Funds','Gold','Crypto','Bonds','Time Deposit','Property','Business','Other'];
+function vInv(){const t={};S.inv.forEach(i=>t[i.k]=(t[i.k]||0)+cv(i.val,cu(i)));const tv=invV(),tm=invM();
+return hd('Investments',bt('addInv','Add Asset','plus'))+`<div class="grid">${K('Total Cost',F(tm))}${K('Current Value',F(tv))}${K('Gain / Loss',F(tv-tm),tv>=tm?'g':'rd')}${K('Return (ROI)',P(tm?(tv-tm)/tm*100:0),tv>=tm?'g':'rd')}</div>
+<div class="card"><h3>Portfolio</h3>${S.inv.map(i=>{const g=i.val-i.modal,c=cu(i);return`<div class="row"><div><b>${esc(i.n)}</b> <small style="display:inline">${i.k} | ${c}</small><small>Cost ${F(i.modal,c)} | Value ${F(i.val,c)}</small></div><div class="rt"><span><b class="${g>=0?'g':'rd'}">${F(g,c)}</b><small class="${g>=0?'g':'rd'}">${P(i.modal?g/i.modal*100:0)}</small></span>${bt('updInv','Update value','refresh','b2',i.id)}${dl('inv',i.id)}</div></div>`}).join('')||none('No assets yet.')}</div>
+<div class="card"><h3>Asset Allocation (${S.cur})</h3>${Object.entries(t).map(([k,v])=>`<div class="row blk"><div style="display:flex;justify-content:space-between"><span>${k}</span><b>${F(v)} (${P(v/tv*100)})</b></div><div class="bar"><i style="width:${v/tv*100}%"></i></div></div>`).join('')||none('Add assets to see allocation.')}</div>`}
+function vDebt(){const L=k=>S.debt.filter(d=>d.k==k).map(d=>{const c=cu(d);return`<div class="row blk"><div style="display:flex;justify-content:space-between;gap:8px"><span><b>${esc(d.n)}</b><small>${c} | ${d.due?'Due '+d.due:'No due date'}${d.cic?' | installment '+F(d.cic,c)+'/mo':''}</small></span><span style="text-align:right"><b>${F(d.total-d.paid,c)}</b>${eq(d.total-d.paid,c)}</span></div><div class="bar"><i style="width:${d.paid/d.total*100}%"></i></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><small>${P(d.paid/d.total*100)} of ${F(d.total,c)}</small><span class="rt">${bt('payDebt',k=='debt'?'Make Payment':'Receive Payment','check','b2',d.id)}${dl('debt',d.id)}</span></div></div>`}).join('')||none('Nothing here.');
+return hd('Debts & Receivables',bt('addDebt','Add','plus'))+`<div class="grid">${K('I Owe',F(owe()),'rd')}${K('Owed To Me',F(rec()),'g')}</div><div class="card"><h3>My Debts</h3>${L('debt')}</div><div class="card"><h3>Money Owed To Me</h3>${L('recv')}</div>`}
+function vGoal(){return hd('Savings Goals',bt('addGoal','Add Goal','plus'))+(S.goal.map(g=>{const c=cu(g),p=g.saved/g.target*100,mo=g.date?Math.max(1,Math.ceil((new Date(g.date)-new Date())/2629800000)):0;return`<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(g.n)} <small>${c}</small></b><b>${P(p)}</b></div><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div><p class="m" style="margin:8px 0">${F(g.saved,c)} of ${F(g.target,c)}${g.date&&g.saved<g.target?`<br>Save <b class="y">${F((g.target-g.saved)/mo,c)}</b> per month for ${mo} months (until ${g.date})`:''}</p><div class="rt" style="justify-content:flex-start">${bt('fundGoal','Add Funds','plus','b2',g.id)}${dl('goal',g.id)}</div></div>`}).join('')||`<div class="card">${none('No goals yet. Add one such as "Emergency Fund" or "Vacation".')}</div>`)}
+function vBill(){const cm=D().slice(0,7);return hd('Recurring Bills',bt('addBill','Add Bill','plus'))+`<div class="grid">${K('Monthly Total',F(sum(S.bill,b=>cv(b.amt,cu(b)))))}${K('Unpaid This Month',F(sum(S.bill.filter(b=>b.paid!=cm),b=>cv(b.amt,cu(b)))),'y')}</div><div class="card">${S.bill.map(b=>{const ok=b.paid==cm,c=cu(b);return`<div class="row"><div><b>${esc(b.n)}</b><small>Every month on day ${b.day} | ${F(b.amt,c)}</small></div><div class="rt">${ok?`<span class="g">${ic('check')} Paid</span>`:bt('payBill','Pay Now','check','b',b.id)}${dl('bill',b.id)}</div></div>`}).join('')||none('No bills yet.')}<p class="m" style="margin-bottom:0"><small>Pay Now records an expense, converted to the wallet currency, and lowers that wallet balance.</small></p></div>`}
+function vCur(){const h={};S.acc.forEach(a=>h[cu(a)]=(h[cu(a)]||0)+bal(a));
+return hd('Currency')+`<div class="card"><h3>Base Currency</h3><p class="m" style="margin-top:0">All totals (dashboard, budget, net worth) use the base currency. Wallets, assets, debts, goals and bills keep their own currency and are converted automatically.</p><select data-c="base">${opts(S.cur)}</select></div>
+<div class="card"><h3>Exchange Rates</h3><p class="m" style="margin-top:0">Rates are manual because the app has no live rate feed. The defaults are approximate sample values, so update them to the current market rate. Format: 1 USD = X.</p>${CUR.map(c=>`<div class="row"><div><b>${c[0]}</b> <small style="display:inline">${c[1]}</small><small>1 ${c[0]} = ${+cv(1,c[0]).toPrecision(5)} ${S.cur}</small></div><div class="rt">1 USD =<input type="number" step="any" style="width:120px;margin:0" value="${S.rates[c[0]]}" data-c="rate" data-p="${c[0]}" ${c[0]=='USD'?'disabled':''}></div></div>`).join('')}<div class="r">${bt('resetRates','Reset to default rates','refresh','b2')}</div></div>
+<div class="card"><h3>Wallet Balances by Currency</h3>${Object.entries(h).map(([c,v])=>`<div class="row"><b>${c}</b><span class="rt"><b>${F(v,c)}</b>${eq(v,c)}</span></div>`).join('')||none('No wallets.')}</div>
+<div class="card"><h3>Currency Converter</h3><div class="two"><label>Amount<input id="v_a" type="number" step="any" value="100" data-i="cv"></label><label>From<select id="v_f" data-i="cv">${opts('USD')}</select></label></div><label>To<select id="v_t" data-i="cv">${opts(S.cur=='USD'?'IDR':S.cur)}</select></label><div id="v_o"></div></div>`}
+function conv(){if(!$('v_a'))return;const a=+$('v_a').value||0,f=$('v_f').value,t=$('v_t').value;$('v_o').innerHTML=`<div class="row"><span>Result</span><b class="g">${F(cv(a,f,t),t)}</b></div><div class="row"><span>Rate</span><b>1 ${f} = ${+cv(1,f,t).toPrecision(6)} ${t}</b></div>`}
+function vCalc(){CC=CC||S.cur;const d=u=>rc(cv(u,'USD',CC),CC),I=(k,l,v)=>`<label>${l}<input id="c_${k}" type="number" step="any" value="${v}" data-i="1"></label>`;
+return hd('Calculators')+`<div class="card"><label style="margin:0">Calculator currency (amounts are converted when you change it)<select id="c_cur" data-c="ccur">${opts(CC)}</select></label></div><div class="two"><div class="card"><h3>Investment Growth (Compound Interest)</h3>${I('p','Initial amount',d(1000))}${I('m','Monthly contribution',d(100))}${I('r','Annual return (%)',10)}${I('y','Years',10)}${I('inf','Annual inflation (%)',3)}<div id="o1"></div></div>
+<div class="card"><h3>Loan / Mortgage Payment</h3>${I('l','Loan amount',d(30000))}${I('lr','Annual interest (%)',8)}${I('ly','Term (years)',15)}<div id="o2"></div></div></div>
+<div class="card"><h3>Emergency Fund & Retirement</h3><div class="two"><div>${I('ex','Monthly expenses',d(400))}${I('em','Target months (3-12)',6)}<div id="o3"></div></div><div>${I('ag','Current age',28)}${I('ra','Retirement age',55)}${I('rx','Monthly need in retirement (today\'s money)',d(600))}<div id="o4"></div></div></div></div>`}
+function calc(){if(!$('c_p'))return;const v=k=>+$('c_'+k).value||0,cc=$('c_cur').value,f=n=>F(n,cc),rw=(a,b,c='')=>`<div class="row"><span>${a}</span><b class="${c}">${b}</b></div>`;
+const r=v('r')/1200,n=Math.max(0,v('y')*12),fv=v('p')*Math.pow(1+r,n)+(r?v('m')*(Math.pow(1+r,n)-1)/r:v('m')*n),dep=v('p')+v('m')*n;
+$('o1').innerHTML=rw('Total contributed',f(dep))+rw('Investment earnings',f(fv-dep),'g')+rw('Final value',f(fv),'g')+rw('Real value (today\'s purchasing power)',f(fv/Math.pow(1+v('inf')/100,v('y'))));
+const L=v('l'),lr=v('lr')/1200,ln=Math.max(1,v('ly')*12),pm=lr?L*lr/(1-Math.pow(1+lr,-ln)):L/ln;
+$('o2').innerHTML=rw('Monthly payment',f(pm),'y')+rw('Total paid',f(pm*ln))+rw('Total interest',f(pm*ln-L),'rd')+rw('Suggested min. income (payment max 30%)',f(pm/.3));
+const tgt=v('ex')*v('em'),ch=cv(cash(),S.cur,cc);$('o3').innerHTML=rw('Emergency fund target',f(tgt),'g')+rw('Your current cash (converted)',f(ch))+rw('Shortfall',f(Math.max(0,tgt-ch)),'rd');
+const yr=Math.max(0,v('ra')-v('ag')),need=v('rx')*Math.pow(1.04,yr),corp=need*12*25,rm=.08/12,nn=yr*12,sv=nn?corp*rm/(Math.pow(1+rm,nn)-1):0;
+$('o4').innerHTML=rw('Monthly need then (4% inflation)',f(need))+rw('Retirement fund (25x yearly need)',f(corp))+rw('Save per month (8% return)',f(sv),'y')}
+function vData(){return hd('Data & Backup')+`<div class="card"><h3>Backup / Restore</h3><p class="m" style="margin-top:0">Data (including currencies and rates) is stored in this browser only. Copy the text below to back up, or paste a backup and press Import.</p><textarea id="bk">${esc(JSON.stringify(S))}</textarea><div class="r">${bt('copyBk','Copy','copy','b2')}${bt('impBk','Import','up')}</div></div><div class="card"><h3>Other</h3><div class="rt" style="justify-content:flex-start">${bt('demo','Load Sample Data','db','b2')}${bt('reset','Delete All Data','trash','b2')}</div></div>`}
+function tg(){const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}
+function demo(){const d=m=>mv(D().slice(0,7),m)+'-',cur=S.cur;S=def();S.cur=cur;S.acc[0].init=500000;S.acc[1].init=8000000;S.acc[2].init=300000;S.acc.push({id:4,n:'USD Account',init:500,cur:'USD'});
+[[0,'in','Salary',12000000,2],[0,'out','Bills',1800000,2],[0,'out','Food',2100000,2],[0,'out','Transport',700000,1],[0,'out','Entertainment',450000,3],[0,'out','Shopping',900000,2],[-1,'in','Salary',12000000,2],[-1,'out','Food',2300000,2],[-1,'out','Bills',1800000,2],[-1,'out','Loan Payments',1500000,2],[-1,'out','Shopping',1200000,2]].forEach(x=>S.tx.push({id:uid(),t:x[1],d:d(x[0])+'10',a:x[4],c:x[2],amt:x[3],note:'',cur:'IDR'}));
+S.tx.push({id:uid(),t:'tf',d:d(0)+'12',a:2,to:4,amt:1600000,amt2:100,c:'Transfer',note:'Buy USD',cur:'IDR'},{id:uid(),t:'out',d:d(0)+'14',a:4,amt:45,c:'Entertainment',note:'Online subscription',cur:'USD'});
+S.bud={Food:2500000,Entertainment:500000,Shopping:1000000};S.inv=[{id:uid(),n:'BBCA',k:'Stocks',modal:5000000,val:5600000,cur:'IDR'},{id:uid(),n:'Gold 5g',k:'Gold',modal:5500000,val:6100000,cur:'IDR'},{id:uid(),n:'US Index Fund',k:'Mutual Funds',modal:300,val:345,cur:'USD'}];
+S.debt=[{id:uid(),k:'debt',n:'Motorbike installment',total:12000000,paid:4000000,cic:1500000,due:'',cur:'IDR'}];S.goal=[{id:uid(),n:'Emergency Fund',target:30000000,saved:8000000,date:'',cur:'IDR'},{id:uid(),n:'Trip to Japan',target:150000,saved:40000,date:'',cur:'JPY'}];
+S.bill=[{id:uid(),n:'Electricity',amt:450000,day:20,c:'Bills',a:2,cur:'IDR'},{id:uid(),n:'Cloud storage',amt:3,day:5,c:'Bills',a:4,cur:'USD'}];R()}
+const cf=(def)=>({k:'cur',l:'Currency',o:curO(),v:def||S.cur});
+const A={
+tab:p=>{tab=p;render()},mp:p=>{M=mv(M,+p);render()},theme:tg,addTx,demo,
+del:p=>{const[k,i]=p.split(':');if(k=='acc'&&S.tx.some(t=>t.a==i||t.to==i))return toast('This wallet has transactions. Delete them first.');S[k]=S[k].filter(x=>x.id!=i);R()},
+base:(p,t)=>{const o=S.cur,n=t.value;if(!CI[n]||n==o)return;Object.keys(S.bud).forEach(k=>S.bud[k]=rc(cv(S.bud[k],o,n),n));S.cur=n;R()},
+rate:(p,t)=>{const v=+t.value;if(!(v>0)){toast('Rate must be greater than 0');return render()}S.rates[p]=v;R()},
+resetRates:()=>{S.rates={...DR};R();toast('Rates reset to defaults')},
+ccur:(p,t)=>{const o=CC,n=t.value;['p','m','l','ex','rx'].forEach(k=>{const e=$('c_'+k);e.value=rc(cv(+e.value||0,o,n),n)});CC=n;calc()},
+addAcc:()=>openForm('New Wallet',[{k:'n',l:'Name (e.g. Cash, Bank, E-Wallet)'},cf(),{k:'init',l:'Opening balance',t:'number'}],o=>{if(!o.n.trim())return'Name is required';S.acc.push({id:uid(),...o});R()}),
+editAcc:p=>{const a=W(p),lock=S.tx.some(t=>t.a==a.id||t.to==a.id);openForm('Edit Wallet',[{k:'n',l:'Name',v:a.n},...(lock?[]:[cf(cu(a))]),{k:'init',l:'Opening balance ('+cu(a)+')',t:'number',v:a.init}],o=>{if(!o.n.trim())return'Name is required';a.n=o.n;a.init=o.init;if(o.cur)a.cur=o.cur;R()})},
+bud:(p,t)=>{S.bud[p]=Math.max(0,+t.value||0);R()},
+addInv:()=>openForm('New Asset',[{k:'n',l:'Name (e.g. BBCA, Gold 10g)'},{k:'k',l:'Type',o:IT},cf(),{k:'modal',l:'Cost / amount invested',t:'number'},{k:'val',l:'Current value',t:'number'}],o=>{if(!o.n.trim())return'Name is required';if(o.modal<=0)return'Enter the invested amount';S.inv.push({id:uid(),...o});R()}),
+updInv:p=>{const i=S.inv.find(x=>x.id==p);ask('Update value: '+esc(i.n),'Current value ('+cu(i)+')',v=>{i.val=v;R()},i.val)},
+addDebt:()=>openForm('Add Debt / Receivable',[{k:'k',l:'Type',o:[['debt','I owe someone (debt)'],['recv','Someone owes me']]},{k:'n',l:'Name / description'},cf(),{k:'total',l:'Total amount',t:'number'},{k:'cic',l:'Monthly installment (optional)',t:'number'},{k:'due',l:'Due date (optional)',t:'date'}],o=>{if(!o.n.trim())return'Name is required';if(o.total<=0)return'Enter a total amount';S.debt.push({id:uid(),...o,paid:0});R()}),
+payDebt:p=>{const d=S.debt.find(x=>x.id==p),c=cu(d);openForm((d.k=='debt'?'Payment: ':'Received: ')+esc(d.n),[{k:'amt',l:'Amount ('+c+')',t:'number',v:d.cic||''},{k:'w',l:'Record in a wallet? (converted automatically)',o:[[0,'No, do not record'],...accO()]}],o=>{if(o.amt<=0)return'Enter an amount';o.amt=Math.min(o.amt,d.total-d.paid);d.paid+=o.amt;const w=W(o.w);if(w)S.tx.push({id:uid(),t:d.k=='debt'?'out':'in',d:D(),amt:rc(cv(o.amt,c,cu(w)),cu(w)),a:w.id,cur:cu(w),c:d.k=='debt'?'Loan Payments':'Other',note:d.n});R()})},
+addGoal:()=>openForm('New Goal',[{k:'n',l:'Goal name (e.g. Emergency Fund)'},cf(),{k:'target',l:'Target amount',t:'number'},{k:'saved',l:'Already saved',t:'number'},{k:'date',l:'Deadline (optional)',t:'date'}],o=>{if(!o.n.trim())return'Name is required';if(o.target<=0)return'Enter a target amount';S.goal.push({id:uid(),...o});R()}),
+fundGoal:p=>{const g=S.goal.find(x=>x.id==p);ask('Add funds: '+esc(g.n),'Amount ('+cu(g)+')',v=>{g.saved+=v;R()})},
+addBill:()=>openForm('New Recurring Bill',[{k:'n',l:'Name (e.g. Electricity, Netflix)'},cf(),{k:'amt',l:'Amount',t:'number'},{k:'day',l:'Due day of month (1-31)',t:'number',v:1},{k:'c',l:'Category',o:C.out,v:'Bills'},{k:'a',l:'Pay from wallet',o:accO()}],o=>{if(!o.n.trim())return'Name is required';if(o.amt<=0)return'Enter an amount';S.bill.push({id:uid(),...o,day:Math.min(31,Math.max(1,o.day||1))});R()}),
+payBill:p=>{const b=S.bill.find(x=>x.id==p),w=W(b.a)||S.acc[0];if(!w)return toast('Create a wallet first');S.tx.push({id:uid(),t:'out',d:D(),amt:rc(cv(b.amt,cu(b),cu(w)),cu(w)),a:w.id,cur:cu(w),c:b.c,note:b.n});b.paid=D().slice(0,7);toast('Bill paid and recorded');R()},
+copyBk:()=>{const t=$('bk');t.select();try{document.execCommand('copy');toast('Copied')}catch(e){toast('Select the text and copy it manually')}},
+impBk:()=>{const o=S;try{const x=JSON.parse($('bk').value);if(!Array.isArray(x.acc)||!Array.isArray(x.tx))throw 0;S=x;norm();R();toast('Import successful')}catch(e){S=o;toast('Invalid backup text')}},
+reset:()=>openForm('Delete all data?',[],()=>{S=def();R()},'Yes, delete')};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t&&A[t.dataset.a]){e.preventDefault();A[t.dataset.a](t.dataset.p,t)}});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-c]');if(t&&A[t.dataset.c])A[t.dataset.c](t.dataset.p,t)});
+document.addEventListener('input',e=>{const i=e.target.dataset&&e.target.dataset.i;if(i=='1')calc();else if(i=='cv')conv()});
+render();
+</script><script async src="/.netlify/scripts/ar" data-netlify-deploy-id="6ad18ea45aa85d35ce80c44b" data-netlify-site-id="bf69afdd-89e0-4626-9e55-d13fe421fc00" data-agent-runner-id="6ad18e759082aa9e40813d15"></script>
+</body></html>
+<script async src="/.netlify/scripts/hud?variant=owner-private" data-nf-variant="owner-private" data-netlify-site-id="bf69afdd-89e0-4626-9e55-d13fe421fc00" data-app-host="app.netlify.com"></script>
